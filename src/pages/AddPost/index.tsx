@@ -15,11 +15,11 @@ export const AddPost = () => {
 
   const onClickRemoveImage = () => {};
 
-  const onChange = React.useCallback((value) => {
+  const onChange = React.useCallback((value: any) => {
     setValue(value);
   }, []);
 
-  const options = React.useMemo(
+  const options : any = React.useMemo(
     () => ({
       spellChecker: false,
       maxHeight: '400px',

@@ -3,6 +3,7 @@ import Button from '@mui/material/Button';
 
 import styles from './Header.module.scss';
 import Container from '@mui/material/Container';
+import { NavLink } from 'react-router-dom';
 
 export const Header = () => {
   const isAuth = false;
@@ -13,27 +14,27 @@ export const Header = () => {
     <div className={styles.root}>
       <Container maxWidth="lg">
         <div className={styles.inner}>
-          <a className={styles.logo} href="/">
+          <NavLink className={styles.logo} to="/">
             <div>ARCHAKOV BLOG</div>
-          </a>
+          </NavLink>
           <div className={styles.buttons}>
             {isAuth ? (
               <>
-                <a href="/posts/create">
+                <NavLink to="/posts/create">
                   <Button variant="contained">Написать статью</Button>
-                </a>
+                </NavLink>
                 <Button onClick={onClickLogout} variant="contained" color="error">
                   Выйти
                 </Button>
               </>
             ) : (
               <>
-                <a href="/login">
+                <NavLink to="/login">
                   <Button variant="outlined">Войти</Button>
-                </a>
-                <a href="/register">
+                </NavLink>
+                <NavLink to="/register">
                   <Button variant="contained">Создать аккаунт</Button>
-                </a>
+                </NavLink>
               </>
             )}
           </div>

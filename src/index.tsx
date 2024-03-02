@@ -6,6 +6,9 @@ import CssBaseline from "@mui/material/CssBaseline";
 //import "./index.scss";
 import { ThemeProvider } from "@mui/material";
 import { theme } from "./theme";
+import { store } from "./redux/store";
+import { Provider } from 'react-redux'
+
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -13,9 +16,11 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <>
+  <Provider store={store}>
     <CssBaseline />
     <ThemeProvider theme={theme}>
       <App />
     </ThemeProvider>
+    </Provider>
   </>
 );

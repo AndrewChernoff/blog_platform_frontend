@@ -3,7 +3,7 @@ import styles from "./SideBlock.module.scss";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 
-export const SideBlock = ({ title, children }) => {
+export const SideBlock = ({ title, children }: any) => {
   return (
     <Paper classes={{ root: styles.root }}>
       <Typography variant="h6" classes={{ root: styles.title }}>
