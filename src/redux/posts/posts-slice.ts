@@ -1,32 +1,41 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import { RootState } from '../store'
 import { createAppAsyncThunk } from '../../utils/createAppAsyncThunk ';
 import { api } from '../../API/api';
 
-// Define a type for the slice state
+type UserType = {
+  _id: string
+  avatarUrl?: string;
+  fullName: string
+  email: string
+  passwordHash: string
+  createdAt: string
+  updatedAt: string
+  __v: number
+}
+
 export type PostItemType = 
 {
-  title: string,
-  text: string,
-  tags: Array<string>,
-  viewsCount: number,
-  user: {
-    [key:string]:string;
-  },
-  createdAt: string,
-  updatedAt: string,
+  _id: string
+  title: string
+  text: string
+  imageUrl?: string
+  tags: Array<string>
+  viewsCount: number
+  user: UserType
+  createdAt: string
+  updatedAt: string
   __v: number
 }
 
 interface StateType {
   posts: {
-    loading: boolean
-    items: PostItemType[] | null
+    isLoading: boolean
+    items: PostItemType[]
   },
   tags: {
-    loading: boolean
-    items: any[] | null
+    isLoading: boolean
+    items: any[]
   }
 
 }
@@ -34,51 +43,52 @@ interface StateType {
 // Define the initial state using that type
 const initialState: StateType = {
   posts: {
-    loading: false,
-    items: null
+    isLoading: false,
+    items: []
   },
   tags: {
-    loading: false,
-    items: null
+    isLoading: false,
+    items: []
   }
 }
 
 export const postsSlice = createSlice({
-  name: 'counter',
-  // `createSlice` will infer the state type from the `initialState` argument
+  name: 'posts',
   initialState,
   reducers: {
-    /* getPosts: (state, action: PayloadAction<PostItemType[]>) => {
-      state.posts.items = action.payload
-    }, */
-    /* getTags: (state, action: PayloadAction<any[]>) => {
-      state.tags.items = action.payload
-    }, */
+    setLoadingStatus: (state, action: PayloadAction<boolean>) => {
+      state.posts.isLoading = action.payload
+    },
   },
   extraReducers: (builder) => {
+    builder.addCase(fetchPosts.pending, (state) => {
+        state.posts.isLoading = true
+    })
     builder.addCase(fetchPosts.fulfilled, (state, action) => {
+      state.posts.isLoading = false
         state.posts.items = action.payload
     })
-  },
+     builder.addCase(fetchTags.pending, (state) => {
+        state.tags.isLoading = true
+    })
+     builder.addCase(fetchTags.fulfilled, (state, action) => {
+        state.tags.isLoading = false
+        state.tags.items = action.payload
+    })
+  }
 })
 
-//export const {  } = postsSlice.actions
-
-
-export const fetchPosts = createAppAsyncThunk<PostItemType[]/* any */, void>(
+export const fetchPosts = createAppAsyncThunk<PostItemType[], void>(
     'posts/fetchPosts', async () => {
       const res = await api.getPosts()
-      // Inferred return type: Promise<MyData>
       return res
     },
-  )
-
- /*  const fetchPosts = createAsyncThunk(
-    'posts/fetchPosts',
-    async (): Promise<PostItemType> => {
-      const res = await api.getPosts();
-      return res.data; // Assuming api.getPosts() returns an AxiosResponse object
-    }
-  ); */
+)
+export const fetchTags = createAppAsyncThunk<string[], void>(
+    'posts/tags', async () => {
+      const res = await api.getTags()
+      return res
+    },
+)
 
 export default postsSlice.reducer

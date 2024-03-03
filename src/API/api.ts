@@ -7,7 +7,11 @@ const instance = axios.create({
 
 export const api = {
     getPosts() {
-        return /* axios.get('http://localhost:4444/posts')// */instance.get('posts')
+        return instance.get('posts')
+        .then(res => res.data)
+    },
+    getTags() {
+        return instance.get('/tags')
         .then(res => res.data)
     }
 }
