@@ -1,4 +1,3 @@
-import React from 'react';
 import clsx from 'clsx';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Clear';
@@ -10,9 +9,10 @@ import styles from './Post.module.scss';
 import { UserInfo } from '../UserInfo';
 import { PostSkeleton } from './Skeleton';
 import { NavLink } from 'react-router-dom';
+import { useAppSelector } from '../../hooks/redux-hooks';
 
 export const Post = ({
-  _id,
+  id,
   title,
   createdAt,
   imageUrl,
@@ -25,17 +25,22 @@ export const Post = ({
   isLoading,
   isEditable,
 }: any) => {
+
+  const userId = useAppSelector(state => state.auth.user?._id)
+
   if (isLoading) {
     return <PostSkeleton />;
   }
 
+  const isOwn: boolean = user.id === userId
+  
   const onClickRemove = () => {};
 
   return (
     <div className={clsx(styles.root, { [styles.rootFull]: isFullPost })}>
       {isEditable && (
-        <div className={styles.editButtons}>
-          <NavLink to={`/posts/${_id}/edit`}>
+        <div className={styles.editButtons} style={{display: isOwn ? 'block': 'none'}} >
+          <NavLink to={`/posts/${id}/edit`}>
             <IconButton color="primary">
               <EditIcon />
             </IconButton>
@@ -56,10 +61,10 @@ export const Post = ({
         <UserInfo {...user} additionalText={createdAt} />
         <div className={styles.indention}>
           <h2 className={clsx(styles.title, { [styles.titleFull]: isFullPost })}>
-            {isFullPost ? title : <NavLink to={`/posts/${_id}`}>{title}</NavLink>}
+            {isFullPost ? title : <NavLink to={`/posts/${id}`}>{title}</NavLink>}
           </h2>
           <ul className={styles.tags}>
-            {tags.map((name: any) => (
+            {tags && tags.map((name: string) => (
               <li key={name}>
                 <NavLink to={`/tag/${name}`}>#{name}</NavLink>
               </li>

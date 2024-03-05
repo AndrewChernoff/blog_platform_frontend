@@ -1,41 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit'
-import type { PayloadAction } from '@reduxjs/toolkit'
+import type { PayloadAction, Slice } from '@reduxjs/toolkit'
 import { createAppAsyncThunk } from '../../utils/createAppAsyncThunk ';
 import { api } from '../../API/api';
-
-type UserType = {
-  _id: string
-  avatarUrl?: string;
-  fullName: string
-  email: string
-  passwordHash: string
-  createdAt: string
-  updatedAt: string
-  __v: number
-}
-
-export type PostItemType = 
-{
-  _id: string
-  title: string
-  text: string
-  imageUrl?: string
-  tags: Array<string>
-  viewsCount: number
-  user: UserType
-  createdAt: string
-  updatedAt: string
-  __v: number
-}
+import { PostItemType } from './posts-types';
+import { AxiosError } from 'axios';
 
 interface StateType {
   posts: {
     isLoading: boolean
     items: PostItemType[]
+    error: null | string
   },
   tags: {
     isLoading: boolean
-    items: any[]
+    items: string[]
   }
 
 }
@@ -44,7 +22,8 @@ interface StateType {
 const initialState: StateType = {
   posts: {
     isLoading: false,
-    items: []
+    items: [],
+    error: null
   },
   tags: {
     isLoading: false,
@@ -52,7 +31,7 @@ const initialState: StateType = {
   }
 }
 
-export const postsSlice = createSlice({
+export const postsSlice: Slice<StateType> = createSlice({
   name: 'posts',
   initialState,
   reducers: {
@@ -68,6 +47,12 @@ export const postsSlice = createSlice({
       state.posts.isLoading = false
         state.posts.items = action.payload
     })
+    builder.addCase(fetchPosts.rejected, (state, action) => {
+      if(action.error.message) {
+        state.posts.isLoading = false
+        state.posts.error = action.error.message
+      }
+    })
      builder.addCase(fetchTags.pending, (state) => {
         state.tags.isLoading = true
     })
@@ -79,9 +64,15 @@ export const postsSlice = createSlice({
 })
 
 export const fetchPosts = createAppAsyncThunk<PostItemType[], void>(
-    'posts/fetchPosts', async () => {
-      const res = await api.getPosts()
-      return res
+    'posts/fetchPosts', async (_, {rejectWithValue}) => {
+     
+        const res = await api.getPosts()
+
+        if(res.status === 200) {
+          return res.data
+        } else {
+          rejectWithValue(res.statusText)
+        }      
     },
 )
 export const fetchTags = createAppAsyncThunk<string[], void>(

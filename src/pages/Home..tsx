@@ -31,7 +31,7 @@ export const Home = () => {
       </Tabs>
       <Grid container spacing={4}>
         <Grid xs={8} item>
-          {isPostsLoading ? [...Array(5)].map((el: any) => <Post isLoading={isPostsLoading}/>)
+          {isPostsLoading ? [...Array(5)].map((_) => <Post isLoading={isPostsLoading}/>)
           : posts.items.map((el) => (
             <Post
               key={el._id}
@@ -41,9 +41,10 @@ export const Home = () => {
               user={{
                 avatarUrl: el.user.avatarUrl,
                 fullName: el.user.fullName,
+                id: el.user._id
               }}
               createdAt={el.user.createdAt}
-              viewsCount={el.viewsCount}///
+              viewsCount={el.viewsCount}
               commentsCount={3}////
               tags={el.tags}
               isEditable

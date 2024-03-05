@@ -4,18 +4,25 @@ import Button from '@mui/material/Button';
 import styles from './Header.module.scss';
 import Container from '@mui/material/Container';
 import { NavLink } from 'react-router-dom';
+import { isAuthSelector } from '../../common/selectors';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
+import { logOut } from '../../redux/auth/auth-slice';
 
 export const Header = () => {
-  const isAuth = false;
+  const isAuth = useAppSelector(isAuthSelector)
+  const dispatch = useAppDispatch()
 
-  const onClickLogout = () => {};
+  const onClickLogout = () => {
+    console.warn('Are you sure you wnat to log out?')
+    dispatch(logOut())
+  };
 
   return (
     <div className={styles.root}>
       <Container maxWidth="lg">
         <div className={styles.inner}>
           <NavLink className={styles.logo} to="/">
-            <div>ARCHAKOV BLOG</div>
+            <div>BLOG</div>
           </NavLink>
           <div className={styles.buttons}>
             {isAuth ? (
