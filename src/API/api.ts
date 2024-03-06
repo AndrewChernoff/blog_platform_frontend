@@ -26,8 +26,15 @@ export const api = {
       .get(`posts/${id}`)
       .then((res) => res.data);
   },
+  createPost: (data: {title: string, text: string, tags: any, imageUrl?: string}) => {
+    return instance
+      .post("posts", data)
+  },
   getTags() {
     return instance.get("/tags").then((res) => res.data);
+  },
+  uploadImg(file: FormData) {
+    return instance.post("/upload", file);
   },
 };
 

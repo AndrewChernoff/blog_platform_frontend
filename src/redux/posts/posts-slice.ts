@@ -45,7 +45,7 @@ export const postsSlice: Slice<StateType> = createSlice({
     })
     builder.addCase(fetchPosts.fulfilled, (state, action) => {
       state.posts.isLoading = false
-        state.posts.items = action.payload
+        state.posts.items = action.payload.reverse()
     })
     builder.addCase(fetchPosts.rejected, (state, action) => {
       if(action.error.message) {
