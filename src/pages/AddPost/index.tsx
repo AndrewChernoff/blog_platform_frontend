@@ -7,9 +7,12 @@ import 'easymde/dist/easymde.min.css';
 import styles from './AddPost.module.scss';
 import { ChangeEvent, useCallback, useMemo, useRef, useState } from 'react';
 import { api } from '../../API/api';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { useAppSelector } from '../../hooks/redux-hooks';
+import { isAuthSelector } from '../../common/selectors';
 
 export const AddPost = () => {
+  const isAuth = useAppSelector(isAuthSelector) 
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [textValue, setTextValue] = useState('');
   const [titleValue, setTitleValue] = useState('');
@@ -77,6 +80,10 @@ export const AddPost = () => {
     }),
     [],
   );
+
+  if(!isAuth) {
+    return <Navigate to="/"/>
+  }
 
   return (
     <Paper style={{ padding: 30 }}>

@@ -60,6 +60,10 @@ export const postsSlice: Slice<StateType> = createSlice({
         state.tags.isLoading = false
         state.tags.items = action.payload
     })
+
+     builder.addCase(deletePost.fulfilled, (state, action) => {
+        state.posts.items = state.posts.items.filter(el => el._id !== action.payload.id)
+    })
   }
 })
 
@@ -81,5 +85,20 @@ export const fetchTags = createAppAsyncThunk<string[], void>(
       return res
     },
 )
+
+export const deletePost = createAppAsyncThunk<{id: string}, string>(
+    'posts/deletePost', async (id) => {
+      try {
+        const res = await api.deletePost(id);
+        if (res.status === 200) {
+          return { id };
+        } else {
+          throw new Error("Couldn't delete post");
+        }
+      } catch (error: any) {
+        throw new Error(error.message); 
+      }
+    },
+  );
 
 export default postsSlice.reducer

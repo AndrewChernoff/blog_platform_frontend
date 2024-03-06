@@ -30,6 +30,10 @@ export const api = {
     return instance
       .post("posts", data)
   },
+  deletePost: (id: string) => {
+    return instance
+      .delete(`/posts/${id}`)
+  },
   getTags() {
     return instance.get("/tags").then((res) => res.data);
   },

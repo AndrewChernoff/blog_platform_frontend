@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import Markdown from 'react-markdown'
 
 import { Post } from "../components/Post";
 import { Index } from "../components/AddComment";
@@ -46,7 +47,13 @@ export const FullPost = () => {
         tags={post?.tags}
         isFullPost
       >
-        <p>{post?.text}</p>
+        
+      {post && <p>
+        <Markdown>
+          {post.text}
+          </Markdown>
+        </p>} 
+         
       </Post>
       <CommentsBlock
         items={[

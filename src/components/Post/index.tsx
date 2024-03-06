@@ -9,7 +9,8 @@ import styles from './Post.module.scss';
 import { UserInfo } from '../UserInfo';
 import { PostSkeleton } from './Skeleton';
 import { NavLink } from 'react-router-dom';
-import { useAppSelector } from '../../hooks/redux-hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
+import { deletePost } from '../../redux/posts/posts-slice';
 
 export const Post = ({
   id,
@@ -27,6 +28,7 @@ export const Post = ({
 }: any) => {
 
   const userId = useAppSelector(state => state.auth.user?._id)
+  const dispatch = useAppDispatch()
 
   if (isLoading) {
     return <PostSkeleton />;
@@ -34,7 +36,9 @@ export const Post = ({
 
   const isOwn: boolean = user.id === userId
   
-  const onClickRemove = () => {};
+  const onClickRemove = () => {
+    dispatch(deletePost(id))
+  };
 
   return (
     <div className={clsx(styles.root, { [styles.rootFull]: isFullPost })}>
