@@ -30,6 +30,10 @@ export const api = {
     return instance
       .post("posts", data)
   },
+  updatePost: (id: string, data: {title: string, text: string, tags: any, imageUrl?: string}) => {
+    return instance
+      .patch(`/posts/${id}`, data)
+  },
   deletePost: (id: string) => {
     return instance
       .delete(`/posts/${id}`)

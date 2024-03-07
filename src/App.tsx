@@ -23,6 +23,7 @@ const dispatch = useAppDispatch()
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/posts/:id" element={<FullPost />} />
+          <Route path="/posts/:_id/edit" element={<AddPost />} />
           <Route path="/login" element={<Login />} />
           <Route path="/posts/create" element={<AddPost />} />
           <Route path="/register" element={<Registration />} />

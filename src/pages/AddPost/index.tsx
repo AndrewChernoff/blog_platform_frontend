@@ -5,22 +5,24 @@ import SimpleMDE from 'react-simplemde-editor';
 
 import 'easymde/dist/easymde.min.css';
 import styles from './AddPost.module.scss';
-import { ChangeEvent, useCallback, useMemo, useRef, useState } from 'react';
+import { ChangeEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { api } from '../../API/api';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate, useParams, Link } from 'react-router-dom';
 import { useAppSelector } from '../../hooks/redux-hooks';
 import { isAuthSelector } from '../../common/selectors';
 
 export const AddPost = () => {
   const isAuth = useAppSelector(isAuthSelector) 
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
-  const [textValue, setTextValue] = useState('');
-  const [titleValue, setTitleValue] = useState('');
-  const [tagsValue, setTagsValue] = useState('');
+  const [imageUrl, setImageUrl] = useState<string | null>(null)
+  const [textValue, setTextValue] = useState('')
+  const [titleValue, setTitleValue] = useState('')
+  const [tagsValue, setTagsValue] = useState('')
   const navigate = useNavigate()
+  const {_id}  = useParams() //for updating post
+
 
   const inputRef = useRef<HTMLInputElement>(null)
-
+  
   const handleChangeFile = async(e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files ? e.target.files[0] : null 
     
@@ -52,15 +54,14 @@ export const AddPost = () => {
   }, []);
 
   const onSubmit = async() => {
-
-   
-     const {data} = await api.createPost({title: titleValue, text: textValue, tags: [tagsValue]/* , imageUrl  */})
-    
-     console.log(data);
-     
-     navigate('/')  
-    
+    if (_id) {
+      api.updatePost(_id, {title: titleValue, text: textValue, tags: [tagsValue]/* , imageUrl  */})
+    } else {
+      api.createPost({title: titleValue, text: textValue, tags: [tagsValue]/* , imageUrl  */})
     }
+
+     navigate('/')
+  }
 
   const uploadPreview = () => {
     inputRef.current?.click()
@@ -81,7 +82,24 @@ export const AddPost = () => {
     [],
   );
 
-  if(!isAuth) {
+  useEffect(() => {
+    if(_id) {
+      try {
+        api.getPostItem(_id)
+        .then((res: any) => {
+          console.log(res)
+          setImageUrl(res.imageUrl)
+          setTextValue(res.text)
+          setTitleValue(res.title)
+          setTagsValue(res.tags)
+        } )  
+      } catch (error) {
+       alert("Can't find post") 
+      }
+    }
+  }, [])
+
+  if(!isAuth && !localStorage.getItem('blog-token')) {
     return <Navigate to="/"/>
   }
 
@@ -113,11 +131,11 @@ export const AddPost = () => {
       <SimpleMDE className={styles.editor} value={textValue} onChange={onTextChange} options={options} />
       <div className={styles.buttons}>
         <Button size="large" variant="contained" onClick={onSubmit}>
-          Опубликовать
+         {_id ? 'Обновить' : 'Опубликовать'}
         </Button>
-        <a href="/">
+        <Link to="/">
           <Button size="large">Отмена</Button>
-        </a>
+        </Link>
       </div>
     </Paper>
   );
