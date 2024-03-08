@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig } from "axios";
 import { LoginDataType } from "../redux/auth/auth-types";
 
 const instance = axios.create({
-  baseURL: "http://localhost:4444",
+  baseURL: process.env.REACT_APP_API_URL/* "http://localhost:4444" */,
 });
 
 export const api = {

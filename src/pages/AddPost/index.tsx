@@ -33,8 +33,8 @@ export const AddPost = () => {
       
       const {data} =  await api.uploadImg(formData)
       
-      setImageUrl(`http://localhost:4444${data.url}`/* data.url */);
-    }
+      setImageUrl(`${process.env.REACT_APP_API_URL}${data.url}`); ///http://localhost:4444
+    } //
   };
 
   const onClickRemoveImage = () => {
