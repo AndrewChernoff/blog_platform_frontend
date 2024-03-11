@@ -21,3 +21,5 @@ export type PostItemType = {
   updatedAt: string;
   __v: number;
 };
+
+export type SortType = 'new' | 'popular'

@@ -1,8 +1,9 @@
+import { SortType } from './../redux/posts/posts-types';
 import axios, { AxiosRequestConfig } from "axios";
 import { LoginDataType } from "../redux/auth/auth-types";
 
 const instance = axios.create({
-  baseURL: process.env.REACT_APP_API_URL/* "http://localhost:4444" */,
+  baseURL: /* process.env.REACT_APP_API_URL */"http://localhost:4444",
 });
 
 export const api = {
@@ -18,8 +19,8 @@ export const api = {
   authMe() {
     return instance.get("auth/me")
   },
-  getPosts() {
-    return instance.get("posts")
+  getPosts(sort: SortType) {
+    return instance.get(`posts?sort=${sort}`)
   },
   getPostItem: (id: string) => {
     return instance

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Grid from '@mui/material/Grid';
@@ -8,8 +8,10 @@ import { TagsBlock } from '../components/TagsBlock';
 import { CommentsBlock } from '../components/CommentsBlock';
 import { useAppDispatch, useAppSelector } from '../hooks/redux-hooks';
 import { fetchPosts, fetchTags } from '../redux/posts/posts-slice';
+import { SortType } from '../redux/posts/posts-types';
 
 export const Home = () => {
+  const [filter, setFilter] = useState<SortType>('new')
 
   const dispatch = useAppDispatch()
   const posts = useAppSelector(state => state.posts.posts)
@@ -19,15 +21,17 @@ export const Home = () => {
   const isTagsLoading = tags.isLoading
 
   useEffect(() => {
-    dispatch(fetchPosts())
+    dispatch(fetchPosts(filter))
     dispatch(fetchTags())
-  }, [])
+  }, [filter])
+
+  const setFilterForRequest = (param: SortType) => setFilter(param) 
 
   return (
     <>
-      <Tabs style={{ marginBottom: 15 }} value={0} aria-label="basic tabs example">
-        <Tab label="Новые" />
-        <Tab label="Популярные" />
+      <Tabs style={{ marginBottom: 15 }} value={filter === 'new' ? 0 : 1} aria-label="basic tabs example">
+        <Tab label="Новые" onClick={() => setFilterForRequest('new')}/>
+        <Tab label="Популярные" onClick={() => setFilterForRequest('popular')} />
       </Tabs>
       <Grid container spacing={4}>
         <Grid xs={8} item>

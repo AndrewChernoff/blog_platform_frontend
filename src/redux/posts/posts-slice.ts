@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction, Slice } from '@reduxjs/toolkit'
 import { createAppAsyncThunk } from '../../utils/createAppAsyncThunk ';
 import { api } from '../../API/api';
-import { PostItemType } from './posts-types';
+import { PostItemType, SortType } from './posts-types';
 import { AxiosError } from 'axios';
 
 interface StateType {
@@ -67,10 +67,10 @@ export const postsSlice: Slice<StateType> = createSlice({
   }
 })
 
-export const fetchPosts = createAppAsyncThunk<PostItemType[], void>(
-    'posts/fetchPosts', async (_, {rejectWithValue}) => {
+export const fetchPosts = createAppAsyncThunk<PostItemType[],  SortType>(
+    'posts/fetchPosts', async (sortParam, {rejectWithValue}) => {
      
-        const res = await api.getPosts()
+        const res = await api.getPosts(sortParam)
 
         if(res.status === 200) {
           return res.data
