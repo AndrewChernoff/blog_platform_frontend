@@ -33,8 +33,12 @@ export const AddPost = () => {
       
       const {data} =  await api.uploadImg(formData)
       
-      setImageUrl(`${process.env.REACT_APP_API_URL}${data.url}`);
-      /* setImageUrl(`http://localhost:4444${data.url}`);  *//// for localhost
+      /* setImageUrl(`${process.env.REACT_APP_API_URL}${data.url}`); */
+      //setImageUrl(`http://localhost:4444${data.url}`); /// for localhost
+
+      const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:4444'
+      setImageUrl(`${baseUrl}${data.url}`); /// for localhost
+
     }
   };
 

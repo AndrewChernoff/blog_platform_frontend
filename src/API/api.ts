@@ -2,8 +2,11 @@ import { SortType } from './../redux/posts/posts-types';
 import axios, { AxiosRequestConfig } from "axios";
 import { LoginDataType } from "../redux/auth/auth-types";
 
+const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:4444'
+
 const instance = axios.create({
-  baseURL: process.env.REACT_APP_API_URL/* "http://localhost:4444" */,
+  //baseURL: /* process.env.REACT_APP_API_URL */"http://localhost:4444",
+  baseURL: baseUrl
 });
 
 export const api = {
