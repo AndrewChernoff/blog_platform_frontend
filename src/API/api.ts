@@ -47,9 +47,6 @@ export const api = {
   },
 };
 
-
-//localStorage.getItem("blog-token")
-
 instance.interceptors.request.use(
   (config: AxiosRequestConfig) => {
     if (config.headers) {

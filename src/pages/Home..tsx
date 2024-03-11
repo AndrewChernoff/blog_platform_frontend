@@ -49,7 +49,7 @@ export const Home = () => {
               }}
               createdAt={el.user.createdAt}
               viewsCount={el.viewsCount}
-              commentsCount={3}////
+              commentsCount={el.commentsCount}////
               tags={el.tags}
               isEditable
             />

@@ -19,6 +19,7 @@ export type PostItemType = {
   user: UserType;
   createdAt: string;
   updatedAt: string;
+  commentsCount: number;
   __v: number;
 };
 
