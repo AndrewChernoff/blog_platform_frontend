@@ -58,15 +58,41 @@ export const AddPost = () => {
     setTagsValue(e.currentTarget.value);
   }, []);
 
-  const onSubmit = async() => {
+  const onSubmit = async () => {
     if (_id) {
-      api.updatePost(_id, {title: titleValue, text: textValue, tags: [tagsValue]/* , imageUrl  */})
+      if (imageUrl) {//if imageUrl send with image, if without image send without image 
+        api.updatePost(_id, {
+          title: titleValue,
+          text: textValue,
+          tags: [tagsValue],
+          imageUrl,
+        });
+      } else {
+        api.updatePost(_id, {
+          title: titleValue,
+          text: textValue,
+          tags: [tagsValue],
+        });
+      }
     } else {
-      api.createPost({title: titleValue, text: textValue, tags: [tagsValue]/* , imageUrl  */})
+      if (imageUrl) {
+        api.createPost({
+          title: titleValue,
+          text: textValue,
+          tags: [tagsValue],
+          imageUrl,
+        });
+      } else {
+        api.createPost({
+          title: titleValue,
+          text: textValue,
+          tags: [tagsValue],
+        });
+      }
     }
 
-     navigate('/')
-  }
+    navigate("/");
+  };
 
   const uploadPreview = () => {
     inputRef.current?.click()
