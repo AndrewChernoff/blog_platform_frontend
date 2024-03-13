@@ -9,6 +9,7 @@ import { CommentsBlock } from '../components/CommentsBlock';
 import { useAppDispatch, useAppSelector } from '../hooks/redux-hooks';
 import { fetchPosts, fetchTags } from '../redux/posts/posts-slice';
 import { SortType } from '../redux/posts/posts-types';
+import { fetchComments } from '../redux/comments/comments-slice';
 
 export const Home = () => {
   const [filter, setFilter] = useState<SortType>('new')
@@ -58,7 +59,8 @@ export const Home = () => {
         <Grid xs={4} item>
           {isTagsLoading ? <TagsBlock isLoading={isTagsLoading}/>
           :<TagsBlock items={tags.items} isLoading={false} />}
-          <CommentsBlock
+          {/* work on it later!!!!!!!!!! */}
+          {/* <CommentsBlock
             items={[
               {
                 user: {
@@ -76,7 +78,7 @@ export const Home = () => {
               },
             ]}
             isLoading={false}
-          />
+          /> */}
         </Grid>
       </Grid>
     </>

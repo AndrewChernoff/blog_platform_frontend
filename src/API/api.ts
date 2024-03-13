@@ -48,6 +48,9 @@ export const api = {
   uploadImg(file: FormData) {
     return instance.post("/upload", file);
   },
+  getComments(id: string) {
+    return instance.get(`/comments/${id}`)
+  }
 };
 
 instance.interceptors.request.use(

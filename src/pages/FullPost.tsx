@@ -7,8 +7,12 @@ import { CommentsBlock } from "../components/CommentsBlock";
 import { useParams } from "react-router-dom";
 import { PostItemType } from "../redux/posts/posts-types";
 import { api } from "../API/api";
+import { useAppDispatch, useAppSelector } from "../hooks/redux-hooks";
+import { fetchComments } from "../redux/comments/comments-slice";
 
 export const FullPost = () => {
+  const dispatch = useAppDispatch();
+  const comments = useAppSelector(state => state.comments.items)
   const [post, setPost] = useState<PostItemType>();
   const [isLoading, setIsloading] = useState<boolean>(false)
 
@@ -24,6 +28,7 @@ export const FullPost = () => {
       setIsloading(true)
       fetchPost(id).catch(() => alert('Error'))
       setIsloading(false)
+      dispatch(fetchComments(id))
     }
   }, []);
 
@@ -56,7 +61,7 @@ export const FullPost = () => {
          
       </Post>
       <CommentsBlock
-        items={[
+        items={comments/* [
           {
             user: {
               fullName: "Вася Пупкин",
@@ -71,7 +76,7 @@ export const FullPost = () => {
             },
             text: "When displaying three lines or more, the avatar is not aligned at the top. You should set the prop to align the avatar at the top",
           },
-        ]}
+        ] */}
         isLoading={false}
       >
         <Index />

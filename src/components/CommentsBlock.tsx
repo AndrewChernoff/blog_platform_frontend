@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 
 import { SideBlock } from "./SideBlock";
 import ListItem from "@mui/material/ListItem";
@@ -8,12 +8,21 @@ import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
 import Skeleton from "@mui/material/Skeleton";
+import { CommentType } from "../redux/comments/comments-types";
 
-export const CommentsBlock = ({ items, children, isLoading = true }:any) => {
+type Props = {
+  items: CommentType[]
+  children?: any
+  isLoading: boolean
+}
+
+export const CommentsBlock = ({ items, children, isLoading = true }:Props) => {
+  console.log(items);
+  
   return (
     <SideBlock title="Комментарии">
       <List>
-        {(isLoading ? [...Array(5)] : items).map((obj: any, index: any) => (
+        {(isLoading ? [...Array(5)] : items).map((obj, index: number) => (
           <React.Fragment key={index}>
             <ListItem alignItems="flex-start">
               <ListItemAvatar>
