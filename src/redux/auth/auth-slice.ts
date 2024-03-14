@@ -19,14 +19,11 @@ export const authSlice: Slice<StateType> = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    /* setLoadingStatus: (state, action: PayloadAction<boolean>) => {
-      state.posts.isLoading = action.payload
-    }, */
   },
   extraReducers: (builder) => {
-    builder.addCase(registerUser.fulfilled, (state, action) => {
+/*     builder.addCase(registerUser.fulfilled, (state, action) => {
         state.user = action.payload
-    })
+    }) */
     builder.addCase(registerUser.rejected, (state, action) => {
       if(action.error.message) {
         state.error = action.payload.message
@@ -68,8 +65,9 @@ export const registerUser = createAppAsyncThunk<any, RegisterDataType>(
     try {
       const response = await api.register(data)
       console.log(response.data.status);
-      if(response.data.status) {
-        return response.data.message
+      if(response.status  === 200) {
+        //return response.data.message
+        alert("You have successfully registred! Try to sign.")
       }
       
       return response.data.user
