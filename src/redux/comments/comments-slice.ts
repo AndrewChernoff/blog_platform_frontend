@@ -42,18 +42,32 @@ export const commentsSlice: Slice<StateType> = createSlice({
 
     builder.addCase(createComment.pending, (state) => {
       state.isLoading = true
-  })
-  builder.addCase(createComment.fulfilled, (state, action) => {
-    state.isLoading = false
-    state.items.push(action.payload)
-  })
-  builder.addCase(createComment.rejected, (state, action) => {
-    if(action.error.message) {
+    })
+    builder.addCase(createComment.fulfilled, (state, action) => {
       state.isLoading = false
-      state.error = action.error.message
-    }
-  })
-}
+      state.items.push(action.payload)
+    })
+    builder.addCase(createComment.rejected, (state, action) => {
+      if(action.error.message) {
+        state.isLoading = false
+        state.error = action.error.message
+      }
+    })
+
+    builder.addCase(deleteComment.pending, (state) => {
+      state.isLoading = true
+    })
+    builder.addCase(deleteComment.fulfilled, (state, action) => {
+      state.isLoading = false
+      state.items = state.items.filter(el => el._id !== action.payload.id)
+    })
+    builder.addCase(deleteComment.rejected, (state, action) => {
+      if(action.error.message) {
+        state.isLoading = false
+        state.error = action.error.message
+      }
+    })
+  }
 })
 
 export const fetchComments = createAppAsyncThunk<CommentType[],  string>(
@@ -69,7 +83,7 @@ export const fetchComments = createAppAsyncThunk<CommentType[],  string>(
     },
 )
 
-export const createComment = createAppAsyncThunk<any, {id: string, text: string}>(
+export const createComment = createAppAsyncThunk<CommentType, {id: string, text: string}>(
     'posts/createComment', async ({id, text}, {rejectWithValue}) => {
      
         const res = await api.createComment(id, text)
@@ -82,6 +96,21 @@ export const createComment = createAppAsyncThunk<any, {id: string, text: string}
     },
 )
 
-
+export const deleteComment = createAppAsyncThunk<{id: string, postId: string}, {id: string, postId: string}>(
+    'posts/deletComment', async ({id, postId}, {rejectWithValue}) => {
+     
+      try {
+        const res = await api.deleteComment(id, postId);
+  
+        if (res.status === 200) {
+          return { id, postId };
+        } else {
+          return rejectWithValue(res.statusText);
+        }
+      } catch (error) {
+        return rejectWithValue(error);
+      }      
+    },
+)
 
 export default commentsSlice.reducer

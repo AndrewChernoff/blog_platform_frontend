@@ -12,11 +12,13 @@ import { fetchComments } from "../redux/comments/comments-slice";
 
 export const FullPost = () => {
   const dispatch = useAppDispatch();
+  const { id } = useParams(); //postId
+
   const comments = useAppSelector(state => state.comments.items)
   const [post, setPost] = useState<PostItemType>();
   const [isLoading, setIsloading] = useState<boolean>(false)
 
-  const { id } = useParams();
+  const commentsCount = useAppSelector(state => state.posts.posts.items).find(el => el._id === id)?.commentsCount ///useing commentsCount from here because in local state it requires additional request
 
   const fetchPost = async (id: string) => {
     const postItem = await api.getPostItem(id);
@@ -32,9 +34,9 @@ export const FullPost = () => {
     }
   }, []);
 
-  if(isLoading || !post) {
+  if(isLoading || !post ) {
     return <Post isLoading/>
-  }
+  }  
 
   return (
     <>
@@ -48,7 +50,7 @@ export const FullPost = () => {
         }}
         createdAt={post.createdAt}
         viewsCount={post.viewsCount}
-        commentsCount={post.commentsCount}
+        commentsCount={commentsCount}
         tags={post?.tags}
         isFullPost
       >
@@ -60,27 +62,14 @@ export const FullPost = () => {
         </p>} 
          
       </Post>
-      <CommentsBlock
-        items={comments/* [
-          {
-            user: {
-              fullName: "Вася Пупкин",
-              avatarUrl: "https://mui.com/static/images/avatar/1.jpg",
-            },
-            text: "Это тестовый комментарий 555555",
-          },
-          {
-            user: {
-              fullName: "Иван Иванов",
-              avatarUrl: "https://mui.com/static/images/avatar/2.jpg",
-            },
-            text: "When displaying three lines or more, the avatar is not aligned at the top. You should set the prop to align the avatar at the top",
-          },
-        ] */}
-        isLoading={false}
+      {id && <CommentsBlock
+        postId={id}
+        items={comments}
+        isLoading={isLoading}
       >
         <Index id={post._id} />
       </CommentsBlock>
+      }
     </>
   );
 };

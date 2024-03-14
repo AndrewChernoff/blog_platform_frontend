@@ -4,6 +4,7 @@ import { createAppAsyncThunk } from '../../utils/createAppAsyncThunk ';
 import { api } from '../../API/api';
 import { PostItemType, SortType } from './posts-types';
 import { AxiosError } from 'axios';
+import { createComment, deleteComment } from '../comments/comments-slice';
 
 interface StateType {
   posts: {
@@ -45,7 +46,7 @@ export const postsSlice: Slice<StateType> = createSlice({
     })
     builder.addCase(fetchPosts.fulfilled, (state, action) => {
       state.posts.isLoading = false
-        state.posts.items = action.payload.reverse()
+        state.posts.items = action.payload
     })
     builder.addCase(fetchPosts.rejected, (state, action) => {
       if(action.error.message) {
@@ -60,9 +61,24 @@ export const postsSlice: Slice<StateType> = createSlice({
         state.tags.isLoading = false
         state.tags.items = action.payload
     })
-
-     builder.addCase(deletePost.fulfilled, (state, action) => {
+    builder.addCase(deletePost.fulfilled, (state, action) => {
         state.posts.items = state.posts.items.filter(el => el._id !== action.payload.id)
+    })
+
+
+    builder.addCase(createComment.fulfilled, (state, action) => {// adding comments
+        const post = state.posts.items.find(el => el._id === action.payload.postId)
+        
+        if(post) {
+          post.commentsCount += 1
+        }
+    })
+    builder.addCase(deleteComment.fulfilled, (state, action) => {// deleting comments
+        const post = state.posts.items.find(el => el._id === action.payload.postId)
+        
+        if(post) {
+          post.commentsCount -= 1
+        }
     })
   }
 })

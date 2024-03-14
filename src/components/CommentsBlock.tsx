@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React from "react";
 
 import { SideBlock } from "./SideBlock";
 import ListItem from "@mui/material/ListItem";
@@ -9,20 +9,26 @@ import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
 import Skeleton from "@mui/material/Skeleton";
 import { CommentType } from "../redux/comments/comments-types";
+import { useAppDispatch } from "../hooks/redux-hooks";
+import { deleteComment } from "../redux/comments/comments-slice";
 
 type Props = {
+  postId: string
   items: CommentType[]
   children?: any
   isLoading: boolean
 }
 
-export const CommentsBlock = ({ items, children, isLoading = true }:Props) => {
-  console.log(items);
+export const CommentsBlock = ({ items, postId, children, isLoading = true }:Props) => {
   
+  const dispatch = useAppDispatch()
+
+  const deleteCommentHandler = (commentId: string, postId: string) => dispatch(deleteComment({id: commentId, postId}))  
+
   return (
     <SideBlock title="Комментарии">
       <List>
-        {(isLoading ? [...Array(5)] : items).map((obj, index: number) => (
+        {(isLoading ? [...Array(5)] : items).map((obj: CommentType, index: number) => (
           <React.Fragment key={index}>
             <ListItem alignItems="flex-start">
               <ListItemAvatar>
@@ -45,6 +51,7 @@ export const CommentsBlock = ({ items, children, isLoading = true }:Props) => {
               )}
             </ListItem>
             <Divider variant="inset" component="li" />
+            <button onClick={() => deleteCommentHandler(obj._id ,postId)}>X</button>
           </React.Fragment>
         ))}
       </List>
