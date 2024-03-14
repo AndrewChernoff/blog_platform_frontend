@@ -50,7 +50,10 @@ export const api = {
   },
   getComments(id: string) {
     return instance.get(`/comments/${id}`)
-  }
+  },
+  createComment(id: string, text: string) {
+    return instance.post(`/comments/${id}`, {text})
+  },
 };
 
 instance.interceptors.request.use(

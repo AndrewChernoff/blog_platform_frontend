@@ -31,7 +31,7 @@ export const commentsSlice: Slice<StateType> = createSlice({
     })
     builder.addCase(fetchComments.fulfilled, (state, action) => {
       state.isLoading = false
-        state.items = action.payload.reverse()
+        state.items = action.payload
     })
     builder.addCase(fetchComments.rejected, (state, action) => {
       if(action.error.message) {
@@ -39,6 +39,20 @@ export const commentsSlice: Slice<StateType> = createSlice({
         state.error = action.error.message
       }
     })
+
+    builder.addCase(createComment.pending, (state) => {
+      state.isLoading = true
+  })
+  builder.addCase(createComment.fulfilled, (state, action) => {
+    state.isLoading = false
+    state.items.push(action.payload)
+  })
+  builder.addCase(createComment.rejected, (state, action) => {
+    if(action.error.message) {
+      state.isLoading = false
+      state.error = action.error.message
+    }
+  })
 }
 })
 
@@ -54,5 +68,20 @@ export const fetchComments = createAppAsyncThunk<CommentType[],  string>(
         }      
     },
 )
+
+export const createComment = createAppAsyncThunk<any, {id: string, text: string}>(
+    'posts/createComment', async ({id, text}, {rejectWithValue}) => {
+     
+        const res = await api.createComment(id, text)
+
+        if(res.status === 200) {
+          return res.data
+        } else {
+          rejectWithValue(res.statusText)
+        }      
+    },
+)
+
+
 
 export default commentsSlice.reducer

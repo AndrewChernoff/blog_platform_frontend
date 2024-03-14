@@ -32,23 +32,23 @@ export const FullPost = () => {
     }
   }, []);
 
-  if(isLoading) {
+  if(isLoading || !post) {
     return <Post isLoading/>
   }
 
   return (
     <>
       <Post
-        id={post?._id}
-        title={post?.title}
-        imageUrl={post?.imageUrl}
+        id={post._id}
+        title={post.title}
+        imageUrl={post.imageUrl}
         user={{
-          avatarUrl: post?.user.avatarUrl,
-          fullName: post?.user.fullName,
+          avatarUrl: post.user.avatarUrl,
+          fullName: post.user.fullName,
         }}
-        createdAt={post?.createdAt}
-        viewsCount={post?.viewsCount}
-        commentsCount={3} //
+        createdAt={post.createdAt}
+        viewsCount={post.viewsCount}
+        commentsCount={post.commentsCount}
         tags={post?.tags}
         isFullPost
       >
@@ -79,7 +79,7 @@ export const FullPost = () => {
         ] */}
         isLoading={false}
       >
-        <Index />
+        <Index id={post._id} />
       </CommentsBlock>
     </>
   );
