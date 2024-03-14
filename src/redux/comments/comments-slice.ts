@@ -96,11 +96,11 @@ export const createComment = createAppAsyncThunk<CommentType, {id: string, text:
     },
 )
 
-export const deleteComment = createAppAsyncThunk<{id: string, postId: string}, {id: string, postId: string}>(
-    'posts/deletComment', async ({id, postId}, {rejectWithValue}) => {
+export const deleteComment = createAppAsyncThunk<{id: string, postId: string}, {id: string, postId: string, userId: string}>(
+    'posts/deletComment', async ({id, postId, userId}, {rejectWithValue}) => {
      
       try {
-        const res = await api.deleteComment(id, postId);
+        const res = await api.deleteComment(id, postId, userId);
   
         if (res.status === 200) {
           return { id, postId };

@@ -16,6 +16,7 @@ export const FullPost = () => {
 
   const comments = useAppSelector(state => state.comments.items)
   const [post, setPost] = useState<PostItemType>();
+  const userId = post?.user._id
   const [isLoading, setIsloading] = useState<boolean>(false)
 
   const commentsCount = useAppSelector(state => state.posts.posts.items).find(el => el._id === id)?.commentsCount ///useing commentsCount from here because in local state it requires additional request

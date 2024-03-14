@@ -37,8 +37,6 @@ export const Index = ({id}: PropsType) => {
 
   const onSubmit: SubmitHandler<TextFieldType> = (data) => {
     const { comment } = data
-    console.log(comment);
-    
     dispatch(createComment({id, text: comment}));
     reset()
   };

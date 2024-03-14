@@ -54,8 +54,8 @@ export const api = {
   createComment(id: string, text: string) {
     return instance.post(`/comments/${id}`, {text})
   },
-  deleteComment(id: string, postId: string) {
-    return instance.delete(`/comments/${id}`, { data: { postId } });
+  deleteComment(id: string, postId: string, userId: string) {
+    return instance.delete(`/comments/${id}`, { data: { postId, userId } });
   },
 };
 

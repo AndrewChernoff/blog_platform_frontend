@@ -5,7 +5,7 @@ export type CommentType = {
     text: "1st comment"
     postId: "65ef5915c8d6e5a670877689"
     userId: "65de186ce48569bba7261393"
-    user: any
+    user: UserType
     createdAt: "2024-03-11T19:52:29.696Z"
     updatedAt: "2024-03-11T19:52:29.696Z"
     __v: 0
