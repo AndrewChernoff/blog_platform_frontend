@@ -28,7 +28,7 @@ export const CommentsBlock = ({ items, postId, children, isLoading = true }:Prop
   const deleteCommentHandler = (commentId: string, postId: string, userId: string) => dispatch(deleteComment({id: commentId, postId, userId}))  
 
   return (
-    <SideBlock title="Комментарии">
+    <SideBlock title={items.length > 0 ? "Комментарии" : "Комментарев нету"}>
       <List>
         {(isLoading ? [...Array(5)] : items).map((obj: CommentType, index: number) => (
           <React.Fragment key={index}>

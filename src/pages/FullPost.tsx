@@ -9,6 +9,7 @@ import { PostItemType } from "../redux/posts/posts-types";
 import { api } from "../API/api";
 import { useAppDispatch, useAppSelector } from "../hooks/redux-hooks";
 import { fetchComments } from "../redux/comments/comments-slice";
+import { isAuthSelector } from "../common/selectors";
 
 export const FullPost = () => {
   const dispatch = useAppDispatch();
@@ -16,7 +17,7 @@ export const FullPost = () => {
 
   const comments = useAppSelector(state => state.comments.items)
   const [post, setPost] = useState<PostItemType>();
-  const userId = post?.user._id
+  const isAuth = useAppSelector(isAuthSelector)
   const [isLoading, setIsloading] = useState<boolean>(false)
 
   const commentsCount = useAppSelector(state => state.posts.posts.items).find(el => el._id === id)?.commentsCount ///useing commentsCount from here because in local state it requires additional request
@@ -68,7 +69,7 @@ export const FullPost = () => {
         items={comments}
         isLoading={isLoading}
       >
-        <Index id={post._id} />
+      {isAuth && <Index id={post._id} />}
       </CommentsBlock>
       }
     </>
