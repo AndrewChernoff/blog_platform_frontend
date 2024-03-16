@@ -12,6 +12,7 @@ import { useAppSelector } from '../../hooks/redux-hooks';
 import { isAuthSelector } from '../../common/selectors';
 
 export const AddPost = () => {
+
   const isAuth = useAppSelector(isAuthSelector) 
   const [imageUrl, setImageUrl] = useState<string | null>(null)
   const [textValue, setTextValue] = useState('')
@@ -19,7 +20,6 @@ export const AddPost = () => {
   const [tagsValue, setTagsValue] = useState('')
   const navigate = useNavigate()
   const {_id}  = useParams() //for updating post
-
 
   const inputRef = useRef<HTMLInputElement>(null)
   
@@ -57,6 +57,8 @@ export const AddPost = () => {
   const onTagsChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setTagsValue(e.currentTarget.value);
   }, []);
+
+  const isDisabled = textValue === '' || titleValue === '' || tagsValue === ''
 
   const onSubmit = async () => {
     if (_id) {
@@ -161,7 +163,7 @@ export const AddPost = () => {
       <TextField classes={{ root: styles.tags }} variant="standard" placeholder="Тэги" value={tagsValue} onChange={onTagsChange} fullWidth />
       <SimpleMDE className={styles.editor} value={textValue} onChange={onTextChange} options={options} />
       <div className={styles.buttons}>
-        <Button size="large" variant="contained" onClick={onSubmit}>
+        <Button size="large" variant="contained" onClick={onSubmit} disabled={isDisabled}>
          {_id ? 'Обновить' : 'Опубликовать'}
         </Button>
         <Link to="/">
