@@ -64,14 +64,14 @@ export const AddPost = () => {
         api.updatePost(_id, {
           title: titleValue,
           text: textValue,
-          tags: [tagsValue],
+          tags: tagsValue.split(' '),
           imageUrl,
         }).catch((error: Error) => alert("I'm sorry uploading images is unavailable for now."))
       } else {
         api.updatePost(_id, {
           title: titleValue,
           text: textValue,
-          tags: [tagsValue],
+          tags: tagsValue.split(' '),
         });
       }
     } else {
