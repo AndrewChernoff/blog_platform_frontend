@@ -66,7 +66,7 @@ export const AddPost = () => {
           text: textValue,
           tags: [tagsValue],
           imageUrl,
-        });
+        }).catch((error: Error) => alert("I'm sorry uploading images is unavailable for now."))
       } else {
         api.updatePost(_id, {
           title: titleValue,

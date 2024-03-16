@@ -19,8 +19,8 @@ type TextFieldType = {
 const AddCommnetSchema: ZodType<TextFieldType> = z.object({
   comment: z
     .string()
-    .min(3, { message: "Message is too short" })
-    .max(55, { message: "Message is too long" }),
+    .min(1, { message: "Message is too short" })
+    .max(75, { message: "Message is too long" }),
 });
 
 export const Index = ({id}: PropsType) => {
@@ -55,6 +55,8 @@ export const Index = ({id}: PropsType) => {
             maxRows={10}
             multiline
             fullWidth
+            error={!!errors?.comment?.message}
+            helperText={errors?.comment?.message}
             {...register("comment")}
           />
           <Button type='submit' variant="contained">Отправить</Button>
