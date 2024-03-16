@@ -64,14 +64,14 @@ export const AddPost = () => {
         api.updatePost(_id, {
           title: titleValue,
           text: textValue,
-          tags: tagsValue.split(' '),
+          tags: tagsValue.replace(',', ' ').split(' '),
           imageUrl,
         }).catch((error: Error) => alert("I'm sorry uploading images is unavailable for now."))
       } else {
         api.updatePost(_id, {
           title: titleValue,
           text: textValue,
-          tags: tagsValue.split(' '),
+          tags: tagsValue.replace(',', ' ').split(' '),
         });
       }
     } else {
@@ -79,14 +79,14 @@ export const AddPost = () => {
         api.createPost({
           title: titleValue,
           text: textValue,
-          tags: [tagsValue],
+          tags: tagsValue.replace(',', ' ').split(' '),
           imageUrl,
         });
       } else {
         api.createPost({
           title: titleValue,
           text: textValue,
-          tags: [tagsValue],
+          tags: tagsValue.replace(',', ' ').split(' '),
         });
       }
     }
@@ -125,7 +125,7 @@ export const AddPost = () => {
           setTagsValue(res.tags)
         } )  
       } catch (error) {
-       alert("Can't find post") 
+       alert("Can't find post")
       }
     }
   }, [])
