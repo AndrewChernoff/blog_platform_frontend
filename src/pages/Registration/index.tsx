@@ -19,12 +19,12 @@ type Inputs = {
 const RegisterSchema: ZodType<Inputs> = z.object({
   fullName: z
     .string()
-    .min(3, { message: "Password is too short" })
-    .max(15, { message: "Password is too long" }),
+    .min(3, { message: "Name is too short" })
+    .max(15, { message: "Name is too long" }),
   email: z.string().email(),
   password: z
     .string()
-    .min(3, { message: "Password is too short" })
+    .min(5, { message: "Password sould be at least 5 symbols" })
     .max(15, { message: "Password is too long" }),
 });
 
