@@ -25,6 +25,9 @@ export const api = {
   getPosts(sort: SortType) {
     return instance.get(`posts?sort=${sort}`)
   },
+  getPostsByTagName(tagName: string) {
+    return instance.get(`/posts/tag/${tagName}`)
+  },
   getPostItem: (id: string) => {
     return instance
       .get(`posts/${id}`)

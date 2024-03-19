@@ -5,11 +5,9 @@ import Grid from '@mui/material/Grid';
 
 import { Post } from '../components/Post';
 import { TagsBlock } from '../components/TagsBlock';
-import { CommentsBlock } from '../components/CommentsBlock';
 import { useAppDispatch, useAppSelector } from '../hooks/redux-hooks';
 import { fetchPosts, fetchTags } from '../redux/posts/posts-slice';
 import { SortType } from '../redux/posts/posts-types';
-import { fetchComments } from '../redux/comments/comments-slice';
 
 export const Home = () => {
   const [filter, setFilter] = useState<SortType>('new')
@@ -50,7 +48,7 @@ export const Home = () => {
               }}
               createdAt={el.user.createdAt}
               viewsCount={el.viewsCount}
-              commentsCount={el.commentsCount}////
+              commentsCount={el.commentsCount}
               tags={el.tags}
               isEditable
             />
@@ -59,26 +57,6 @@ export const Home = () => {
         <Grid xs={4} item>
           {isTagsLoading ? <TagsBlock isLoading={isTagsLoading}/>
           :<TagsBlock items={tags.items} isLoading={false} />}
-          {/* work on it later!!!!!!!!!! */}
-          {/* <CommentsBlock
-            items={[
-              {
-                user: {
-                  fullName: 'Вася Пупкин',
-                  avatarUrl: 'https://mui.com/static/images/avatar/1.jpg',
-                },
-                text: 'Это тестовый комментарий',
-              },
-              {
-                user: {
-                  fullName: 'Иван Иванов',
-                  avatarUrl: 'https://mui.com/static/images/avatar/2.jpg',
-                },
-                text: 'When displaying three lines or more, the avatar is not aligned at the top. You should set the prop to align the avatar at the top',
-              },
-            ]}
-            isLoading={false}
-          /> */}
         </Grid>
       </Grid>
     </>

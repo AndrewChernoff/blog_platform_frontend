@@ -1,9 +1,6 @@
 import { useEffect, lazy, Suspense  } from "react";
-
 import Container from "@mui/material/Container";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
-//import { Home, FullPost, Registration, AddPost, Login } from "./pages";
 import { Header } from "./components/Header";
 import { useAppDispatch } from "./hooks/redux-hooks";
 import { authMe } from "./redux/auth/auth-slice";
@@ -22,6 +19,9 @@ const AddPost = lazy(() =>
 );
 const Login = lazy(() =>
   import("./pages").then(({ Login }) => ({ default: Login }))
+);
+const PostsByTags = lazy(() =>
+  import("./pages").then(({ PostsByTags }) => ({ default: PostsByTags }))
 );
 
 
@@ -45,6 +45,7 @@ const dispatch = useAppDispatch()
           <Route path="/login" element={<Login />} />
           <Route path="/posts/create" element={<AddPost />} />
           <Route path="/register" element={<Registration />} />
+          <Route path="/tags/:tagName" element={<PostsByTags />} />
         </Routes>
       </Suspense>
       </Container>
